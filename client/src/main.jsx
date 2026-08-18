@@ -13,8 +13,8 @@ createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<App />}></Route>
+         
+          <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup></Signup>}></Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/profile" element={<Profile />}></Route>
