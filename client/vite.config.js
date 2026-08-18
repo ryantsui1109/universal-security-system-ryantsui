@@ -6,6 +6,7 @@ import { resolve } from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
+  base:"/login/",
   server: {
     port: 3601,
     proxy: {
