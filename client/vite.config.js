@@ -18,7 +18,9 @@ export default defineConfig({
   },
   build: {
     rolldownOptions: {
-      main: resolve(import.meta.dirname, "index.html"),
+      input: {
+        login: resolve(import.meta.dirname, "index.html"),
+      },
     },
   },
 });
