@@ -6,7 +6,6 @@ import { Row } from "react-bootstrap";
 import LoginCard from "./login/components/LoginCard";
 import classNames from "classnames";
 import { useEffect } from "react";
-import './HideEmptyParagraph.css'
 
 function Login() {
   useEffect(() => {

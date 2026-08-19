@@ -1,23 +1,26 @@
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../../AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
 
 function LoginCard() {
+  const [userInfo, setUserInfo] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const AuthInfo = useAuth();
-  const navigate = useNavigate();
+  useEffect(() => {
+    async function fetchUserInfo() {
+      try {
+        const response = await axios.get("/api/me");
+        window.location.replace("/profile");
+      } catch {}
+    }
+    fetchUserInfo();
+  },[]);
 
   function handleSignup() {
-    navigate("/signup");
+    window.location.href = "/signup";
   }
 
-  if (AuthInfo.user) {
-    return <Navigate to="/profile"></Navigate>;
-  }
   async function handleSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.target);
@@ -35,8 +38,7 @@ function LoginCard() {
           withCredentials: true,
         });
 
-        AuthInfo.setUser(res.data.userInfo);
-        navigate("/profile", { replace: true });
+        window.location.replace("/profile");
       } catch (error) {
         if (error.response) {
           console.log(error.response);
@@ -71,7 +73,12 @@ function LoginCard() {
                 />
               </Form.Group>
 
-              <p className="text-danger">{errorMessage}</p>
+              <p
+                className="text-danger"
+                style={{ display: errorMessage ? "block" : "none" }}
+              >
+                {errorMessage}
+              </p>
             </Form>
           </Card.Body>
           <Card.Body className="text-end">

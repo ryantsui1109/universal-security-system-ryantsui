@@ -3,14 +3,9 @@ import { Button } from "react-bootstrap";
 import { Card } from "react-bootstrap";
 import { useState } from "react";
 import axios from "axios";
-import { useAuth } from "../../AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 function SignupCard() {
   const [message, setMessage] = useState(null);
-  const AuthInfo = useAuth();
-  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -32,12 +27,24 @@ function SignupCard() {
             withCredentials: true,
           });
 
-          setMessage(<span>註冊成功，<Link to="/login">立即登入</Link></span>)
+          setMessage(
+            <span>
+              註冊成功，<a href="/login">立即登入</a>
+            </span>,
+          );
         } catch (error) {
           if (error.response) {
-            setMessage(<span className="text-danger">{error.response.data.message}</span>);
+            setMessage(
+              <span className="text-danger">
+                {error.response.data.message}
+              </span>,
+            );
           } else {
-            setMessage(<span className="text-danger">"網路連線錯誤：" + {error.message}</span>);
+            setMessage(
+              <span className="text-danger">
+                "網路連線錯誤：" + {error.message}
+              </span>,
+            );
           }
         }
       } else {
@@ -95,7 +102,7 @@ function SignupCard() {
                 />
               </Form.Group>
 
-              <p>{message}</p>
+              <p style={{ display: message ? "block" : "none" }}>{message}</p>
             </Form>
           </Card.Body>
           <Card.Body className="text-end">

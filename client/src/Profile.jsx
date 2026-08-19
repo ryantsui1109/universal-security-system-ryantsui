@@ -2,21 +2,32 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
 import ProfileNavbar from "./profile/components/ProfileNavbar";
 import { Card } from "react-bootstrap";
-import { useAuth } from "./AuthContext";
 import { Button } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Profile() {
-  const AuthInfo = useAuth();
+  const [userInfo, setUserInfo] = useState(null);
   useEffect(() => {
     document.title = "My Profile - USSR";
   });
 
+  useEffect(() => {
+    async function fetchUserInfo() {
+      try {
+        const response = await axios.get("/api/me");
+        setUserInfo(response.data.userInfo); // 驗證成功，存入使用者資料
+      } catch {
+        window.location.replace("/login");
+      }
+    }
+    fetchUserInfo();
+  },[]);
+
   function handleClick(e) {
     axios.post("/api/auth/logout", {}, { withCredentials: true });
-    AuthInfo.setUser(null);
+    window.location.replace("/login");
   }
   return (
     <>
@@ -28,10 +39,10 @@ function Profile() {
               <Card.Title>User info</Card.Title>
               <Card.Text>
                 <strong>Username: </strong>
-                {AuthInfo.user.username}
+                {userInfo ? userInfo.username : ""}
                 <br />
                 <strong>Nickname: </strong>
-                {AuthInfo.user.nickname}
+                {userInfo ? userInfo.nickname : ""}
               </Card.Text>
               <Button onClick={handleClick}>Logout</Button>
             </Card.Body>
